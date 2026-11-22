@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}Edit person{% endblock %}
+
+{% block content %}
+<p class="eyebrow"><a href="{% url 'user_list' %}">People</a> / Edit record</p>
+<section class="panel" style="max-width: 680px; margin: 20px auto;">
+    <h1>Edit person</h1>
+    <p class="subtitle" style="margin-bottom: 28px;">Update the details below, then save your changes.</p>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Save changes</button>
+            <a href="{% url 'user_list' %}" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</section>
+{% endblock %}

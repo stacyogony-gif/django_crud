@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}Delete person{% endblock %}
+
+{% block content %}
+<section class="panel" style="max-width: 560px; margin: 40px auto;">
+    <div class="confirm-icon" aria-hidden="true">!</div>
+    <p class="eyebrow">Delete record</p>
+    <h1 style="font-size: 30px;">Delete {{ user.name }}?</h1>
+    <p class="subtitle">This will permanently remove this person's record. This action cannot be undone.</p>
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-actions">
+            <button type="submit" class="btn btn-danger">Delete person</button>
+            <a href="{% url 'view_user' user.id %}" class="btn btn-secondary">Keep this person</a>
+        </div>
+    </form>
+</section>
+{% endblock %}

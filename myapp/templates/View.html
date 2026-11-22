@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}{{ user.name }}{% endblock %}
+
+{% block content %}
+<p class="eyebrow"><a href="{% url 'user_list' %}">People</a> / Person details</p>
+<section class="panel" style="max-width: 760px; margin: 20px auto;">
+    <div class="page-heading" style="margin-bottom: 20px;">
+        <div class="profile">
+            {% if user.photo %}
+                <img src="{{ user.photo.url }}" class="avatar" alt="">
+            {% endif %}
+            <div>
+                <h1>{{ user.name }}</h1>
+                <p class="subtitle">Person details</p>
+            </div>
+        </div>
+    </div>
+    <div class="detail-grid">
+        <div class="detail-item">
+            <span class="detail-label">Email</span>
+            <a class="detail-value" href="mailto:{{ user.email }}">{{ user.email }}</a>
+        </div>
+        <div class="detail-item">
+            <span class="detail-label">Phone</span>
+            <a class="detail-value" href="tel:{{ user.mobile_number }}">{{ user.mobile_number }}</a>
+        </div>
+        <div class="detail-item">
+            <span class="detail-label">Date of birth</span>
+            <span class="detail-value">{{ user.date_of_birth|date:"F j, Y" }}</span>
+        </div>
+    </div>
+    <div class="form-actions">
+        <a class="btn btn-primary" href="{% url 'edit_user' user.id %}">Edit person</a>
+        <a class="btn btn-secondary" href="{% url 'user_list' %}">Back to people</a>
+        <a class="btn btn-secondary" href="{% url 'delete_user' user.id %}">Delete</a>
+    </div>
+</section>
+{% endblock %}

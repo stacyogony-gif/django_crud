@@ -1,0 +1,84 @@
+
+{% extends "base.html" %}
+
+{% block title %}People{% endblock %}
+
+{% block content %}
+<section class="page-heading">
+    <div>
+        <p class="eyebrow">People directory</p>
+        <h1>All people</h1>
+        <p class="subtitle">Find a record or manage your people in one place.</p>
+    </div>
+    <a class="btn btn-primary" href="{% url 'add_user' %}">＋ Add person</a>
+</section>
+
+<section class="panel" aria-label="People directory">
+    <div class="toolbar">
+        <form class="search" method="get" role="search">
+            <input type="search" name="q" value="{{ search_term }}" placeholder="Search name, email, or phone" aria-label="Search people">
+            <button class="btn btn-secondary" type="submit">Search</button>
+            {% if search_term %}
+                <a class="btn btn-secondary" href="{% url 'user_list' %}">Clear</a>
+            {% endif %}
+        </form>
+        <span class="muted">{{ records|length }} result{{ records|length|pluralize }}{% if search_term %} · {{ total_records }} total{% endif %}</span>
+    </div>
+
+    {% if records %}
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th scope="col">Person</th>
+                        <th scope="col" class="hide-mobile">Contact</th>
+                        <th scope="col" class="hide-mobile">Date of birth</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for rec in records %}
+                        <tr>
+                            <td>
+                                <div class="person">
+                                    {% if rec.photo %}
+                                        <img src="{{ rec.photo.url }}" class="avatar" alt="">
+                                    {% else %}
+                                        <span class="avatar" aria-hidden="true"></span>
+                                    {% endif %}
+                                    <a class="person-name" href="{% url 'view_user' rec.id %}">{{ rec.name }}</a>
+                                </div>
+                            </td>
+                            <td class="hide-mobile">
+                                <div>{{ rec.email }}</div>
+                                <span class="muted">{{ rec.mobile_number }}</span>
+                            </td>
+                            <td class="hide-mobile">{{ rec.date_of_birth|date:"M j, Y" }}</td>
+                            <td>
+                                <div class="actions">
+                                    <a class="btn btn-view btn-small" href="{% url 'view_user' rec.id %}">View</a>
+                                    <a class="btn btn-edit btn-small" href="{% url 'edit_user' rec.id %}">Edit</a>
+                                    <a class="btn btn-delete btn-small" href="{% url 'delete_user' rec.id %}">Delete</a>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <div class="empty-icon" aria-hidden="true">⌕</div>
+            {% if search_term %}
+                <h2>No matches found</h2>
+                <p class="muted">Try another name, email, or phone number.</p>
+                <a class="btn btn-secondary" href="{% url 'user_list' %}">Clear search</a>
+            {% else %}
+                <h2>Your directory is ready</h2>
+                <p class="muted">Add your first person to get started.</p>
+                <a class="btn btn-primary" href="{% url 'add_user' %}">＋ Add first person</a>
+            {% endif %}
+        </div>
+    {% endif %}
+</section>
+{% endblock %}
